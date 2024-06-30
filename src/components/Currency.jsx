@@ -19,7 +19,6 @@ const Currency = () => {
     const [endDate, setEndDate] = useState('');
     const [historicalPrices, setHistoricalPrices] = useState([]);
     const [loadingHistoricalPrices, setLoadingHistoricalPrices] = useState(false);
-
     useEffect(() => {
         const fetchExchangeRates = async () => {
             const client = new currencyapi('cur_live_aQq76TMUmwEt6FA5GulFtbczeDtD3FF96yZuDPpT');
@@ -129,7 +128,7 @@ const Currency = () => {
     return (
         <Card>
             <CardContent>
-                <Typography variant="h5">Currency Exchange Rates & Historical Gold Prices</Typography>
+                <Typography variant="h5">Currency Exchange Rates</Typography>
                 {error ? (
                     <Typography color="error">{error}</Typography>
                 ) : (

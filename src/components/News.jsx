@@ -9,22 +9,36 @@ const News = () => {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await axios.get(
-                    'https://newsapi.org/v2/top-headlines',
-                    {
-                        params: {
-                            country: 'eg',
-                            apiKey: '5a80618a1ccb4455956c6c9b6cde547e'
+                const [englishNews, arabicNews] = await Promise.all([
+                    axios.get(
+                        'https://api.thenewsapi.com/v1/news/all',
+                        {
+                            params: {
+                                api_token: 'tpMFPX6GW0LNtp2vBPP97oblH6F6kyUaW9XeN4ON',
+                                language: 'en',
+                                limit: 10
+                            }
                         }
-                    }
-                );
-                setNews(response.data.articles);
-                console.log("Hello", response.data.articles);
+                    ),
+                    axios.get(
+                        'https://api.thenewsapi.com/v1/news/all',
+                        {
+                            params: {
+                                api_token: 'tpMFPX6GW0LNtp2vBPP97oblH6F6kyUaW9XeN4ON',
+                                language: 'ar',
+                                limit: 10
+                            }
+                        }
+                    )
+                ]);
+
+                const combinedNews = [...englishNews.data.data, ...arabicNews.data.data];
+                setNews(combinedNews);
+                console.log("Fetched News:", combinedNews);
             } catch (err) {
                 setError('Error fetching news');
             }
         };
-
         fetchNews();
     }, []);
 
@@ -39,12 +53,12 @@ const News = () => {
                         {news.map((article, index) => (
                             <Grid item xs={12} sm={6} md={6} key={index}>
                                 <Card>
-                                    {article.urlToImage && (
+                                    {article.image_url && (
                                         <CardMedia
                                             component="img"
                                             alt={article.title}
                                             height="140"
-                                            image={article.urlToImage}
+                                            image={article.image_url}
                                             title={article.title}
                                         />
                                     )}
@@ -55,7 +69,7 @@ const News = () => {
                                             </Typography>
                                         </Link>
                                         <Typography variant="body2" color="textSecondary" component="div">
-                                            {article.author}
+                                            {article.source}
                                         </Typography>
                                     </CardContent>
                                 </Card>
