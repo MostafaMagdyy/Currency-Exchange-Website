@@ -33,7 +33,7 @@ const GoldPrices = () => {
                 setError('Error fetching gold prices');
             }
         };
-        fetchGoldPrices();
+        // fetchGoldPrices();
     }, []);
 
     return (
